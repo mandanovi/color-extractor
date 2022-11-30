@@ -1,11 +1,13 @@
 from flask import Flask, render_template, after_this_request
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed, FileRequired
-import os, glob
+import os
 from werkzeug.utils import secure_filename
-import numpy as np
-from PIL import Image
-from sklearn.cluster import KMeans
+# import numpy as np
+# from PIL import Image
+# from sklearn.cluster import KMeans
+from colorthief import ColorThief
+
 
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 UPLOAD_FOLDER = os.path.join(APP_ROOT, 'static', 'uploads')
@@ -31,11 +33,10 @@ def home():
 
 @app.route("/upload", methods=["GET", "POST"])
 def upload():
-    @after_this_request
-    def delete(response):
-        os.remove(image_path)
-        return response
-
+    # @after_this_request
+    # def delete(response):
+    #     os.remove(image_path)
+    #     return response
     form = UploadForm()
     if form.validate_on_submit():
         f = form.upload.data
@@ -44,13 +45,15 @@ def upload():
         full_filename = os.path.join('static/uploads/', name)
         f.save(full_filename)
         image_path = f"static/uploads/{f.filename}"
-        user_img = Image.open(image_path)
-        img_shape = np.array(user_img)
-        clt = KMeans(n_clusters=10)
-        clt.fit(img_shape.reshape(-1, 3))
-        clt_clusters = clt.cluster_centers_
-        print(clt_clusters)
-        return render_template("upload.html", form=form, image=image_path, colors=clt_clusters)
+        # user_img = Image.open(image_path)
+        # img_shape = np.array(user_img)
+        # clt = KMeans(n_clusters=10)
+        # clt.fit(img_shape.reshape(-1, 3))
+        # clt_clusters = clt.cluster_centers_
+        # print(clt_clusters)
+        color_thief = ColorThief(image_path)
+        top_colors = color_thief.get_palette(color_count=11)
+        return render_template("upload.html", form=form, image=image_path, colors=top_colors)
 
     return render_template("upload.html", form=form)
 
