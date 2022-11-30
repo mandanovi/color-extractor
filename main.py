@@ -6,6 +6,7 @@ from werkzeug.utils import secure_filename
 import numpy as np
 from PIL import Image
 from sklearn.cluster import KMeans
+from colorthief import ColorThief
 
 
 app = Flask(__name__)
@@ -31,18 +32,13 @@ def upload():
     form = UploadForm()
     if form.validate_on_submit():
         f = form.upload.data
-        name = f.filename
-        name = secure_filename(name)
+        name = secure_filename(f.filename)
         f.save(os.path.join("static/uploads/", name))
         image_path = f"static/uploads/{f.filename}"
-        user_img = Image.open(image_path)
-        img_shape = np.array(user_img)
-        clt = KMeans(n_clusters=10)
-        clt_fit = clt.fit(img_shape.reshape(-1,3))
-        clt_label = clt.labels_
-        clt_clusters = clt.cluster_centers_
-        print(clt_clusters)
-        return render_template("upload.html", form=form, image=image_path, colors=clt_clusters)
+        print(image_path)
+        color_thief = ColorThief(image_path)
+        top_colors = color_thief.get_palette(color_count=11)
+        return render_template("upload.html", form=form, image=image_path, colors=top_colors)
     return render_template("upload.html", form=form)
 
 

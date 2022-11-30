@@ -43,13 +43,13 @@
                                 </div>
                           </form>
 	<div>
-		<img src="{{ image }}" class="main_image figure-img img-fluid rounded" alt="Responsive image">
+		<img src="{{ image }}" class="main_image figure-img img-fluid rounded" alt="Image">
 	</div>
                             {% for color in colors %}
-                            <button style="background-color:rgb{{ color[0], color[1], color[2] }}"
+                            <button style="background-color:rgb{{ color }}"
                     type="button"
                     class="btn btn-light"
-                    onclick="alert('RGB CODE IS {{ color[0], color[1], color[2] }}')"
+                    onclick="alert('RGB CODE IS {{ color }}')"
                     >GET</button>
                             {% endfor %}
                         </div>
