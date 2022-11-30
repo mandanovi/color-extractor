@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -33,8 +32,11 @@
                           <form method="post" action="{{ url_for('upload') }}" enctype="multipart/form-data">
                                 {{ form.csrf_token }}
                                 <div class="mb-3">
-                                {% if form.errors.image %}
+                                {% if form.upload.errors %}
                                 {{ form.upload(size=20, class="form-control is-invalid") }}
+                                {% for error in form.upload.errors %}
+                                <p style="color:red;">{{ error }}</p>
+                                {% endfor %}
                                 {% else %}
                                 {{ form.upload(size=20, class="form-control") }}
                                 {% endif %}
@@ -43,14 +45,14 @@
                                 </div>
                           </form>
 	<div>
-		<img src="{{ image }}" class="main_image figure-img img-fluid rounded" alt="Image">
+		<img src="{{ image }}" class="main_image figure-img img-fluid rounded" alt="Responsive image">
 	</div>
                             {% for color in colors %}
-                            <button style="background-color:rgb{{ color }}"
+                            <button style="background-color:rgb{{ color[0], color[1], color[2] }}"
                     type="button"
                     class="btn btn-light"
-                    onclick="alert('RGB CODE IS {{ color }}')"
-                    >GET</button>
+                    onclick="alert('RGB CODE IS {{ color[0], color[1], color[2] }}')"
+                    >RGB</button>
                             {% endfor %}
                         </div>
                     </div>

@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -30,7 +29,7 @@
                     <div class="col-xl-6">
                         <div class="text-center text-white">
                             <!-- Page heading-->
-                            <h1 class="mb-5">Pulls the most common colors out of an image file</h1>
+                            <h1 class="mb-5">Pulls the exact most common colors out of an image file</h1>
                           <form method="post" action="{{ url_for('upload') }}" enctype="multipart/form-data">
                                 {{ form.csrf_token }}
                                 <div class="mb-3">
@@ -43,13 +42,13 @@
                                 <input class="btn btn-light" type="submit" value="Submit" >
                                 </div>
                           </form>
-
+ 
                         </div>
                     </div>
                 </div>
             </div>
         </header>
-
+ 
         <!-- Footer-->
         <footer class="footer bg-light">
             <div class="container">
